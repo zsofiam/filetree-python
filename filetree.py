@@ -7,7 +7,8 @@ def print_decorline(chars, length, keep_whole=True):
         decorline += chars
         if len(decorline) >= length:
             if keep_whole:
-                decorline = decorline[1:length]
+                side = length % len(chars)
+                decorline = decorline[0:length-side]
             break
     print(decorline)
 
@@ -48,10 +49,6 @@ def filetree(path="", prefix_spaces=""):
     for elem in filter_list:
         #Create a new entries list based on old one
         entries = [ item for item in entries if elem not in item ]
-
-    # Stop:if the current dir does not contain newer entries
-    """ if len(entries) == 0:
-        return """
     # Get files in current folder:
     files = [ entry for entry in entries if os.path.isfile(os.path.join(path, entry)) ]
     files = sorted(files)
@@ -65,14 +62,14 @@ def filetree(path="", prefix_spaces=""):
     for dir in dirs:
         print(f"{prefix_spaces}{dir_marker}{dir}")
         new_path = os.path.join(path, dir)
-        filetree(path=new_path, prefix_spaces=prefix_spaces+4*' ')
+        filetree(path=new_path, prefix_spaces=prefix_spaces + (4*' '))
 
 
 def main():
     print("The contents of the current folder are:")
-    print_decorline("*--*", 30)
+    print_decorline("*--*", 32)
     filetree(".")
-    print_decorline("*--*", 30)
+    print_decorline("*--*", 32)
 
 
 if __name__ == '__main__':
